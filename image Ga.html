@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responsive Image Gallery</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f8f9fa;
+    }
+    h1 {
+      text-align: center;
+      padding: 20px;
+      color: #333;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 15px;
+      padding: 20px;
+    }
+    .gallery img {
+      width: 100%;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .gallery img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Lightbox */
+    .lightbox {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    .lightbox img {
+      max-width: 90%;
+      max-height: 80%;
+      border-radius: 10px;
+    }
+    .close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 2rem;
+      cursor: pointer;
+      color: white;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 10px 15px;
+      border-radius: 50%;
+    }
+    .controls {
+      margin-top: 15px;
+    }
+    .btn {
+      font-size: 2rem;
+      color: white;
+      cursor: pointer;
+      margin: 0 20px;
+      padding: 10px 20px;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 50%;
+      transition: background 0.3s;
+    }
+    .btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <h1>🌟 My Image Gallery</h1>
+  
+  <div class="gallery">
+    <img src="C:\Users\HP\OneDrive\Desktop\G1.jpg" alt="Image 1">
+    <img src="C:\Users\HP\OneDrive\Desktop\G2.jpg" alt="Image 2">
+    <img src="C:\Users\HP\OneDrive\Desktop\G5.webp" alt="Image 3">
+    <img src="C:\Users\HP\OneDrive\Desktop\G3.jpg" alt="Image 4">
+    <img src="C:\Users\HP\OneDrive\Desktop\G4.jpg" alt="Image 5">
+</div>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox">
+    <span class="close" id="close">✖</span>
+    <img id="lightbox-img" src="">
+    <div class="controls">
+      <span class="btn" id="prev">⏮</span>
+      <span class="btn" id="next">⏭</span>
+    </div>
+  </div>
+
+  <script>
+    const gallery = document.querySelectorAll('.gallery img');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const closeBtn = document.getElementById('close');
+    const nextBtn = document.getElementById('next');
+    const prevBtn = document.getElementById('prev');
+    let index = 0;
+
+    function showImage(i) {
+      lightbox.style.display = 'flex';
+      lightboxImg.src = gallery[i].src;
+      index = i;
+    }
+
+    gallery.forEach((img, i) => {
+      img.addEventListener('click', () => showImage(i));
+    });
+
+    closeBtn.addEventListener('click', () => {
+      lightbox.style.display = 'none';
+    });
+
+    nextBtn.addEventListener('click', () => {
+      index = (index + 1) % gallery.length;
+      showImage(index);
+    });
+
+    prevBtn.addEventListener('click', () => {
+      index = (index - 1 + gallery.length) % gallery.length;
+      showImage(index);
+    });
+
+    // Keyboard support
+    window.addEventListener('keydown', (e) => {
+      if (lightbox.style.display === 'flex') {
+        if (e.key === 'ArrowRight') nextBtn.click();
+        if (e.key === 'ArrowLeft') prevBtn.click();
+        if (e.key === 'Escape') closeBtn.click();
+      }
+    });
+  </script>
+</body>
+</html>
